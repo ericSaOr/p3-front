@@ -1,9 +1,13 @@
 import React, {useState} from 'react';
 
-function BakerViewer({ bakers }) {
+function BakerViewer({ bakers, setDonuts}) {
     const [ number, setNumber ] = useState(0)
     const [flavor, setFlavor] = useState("")
+    const [addDonut, onAddDonut] = useState({})
 	console.log(bakers);
+
+
+    
 	function bakerFunc() {
 		return bakers.map((baker) => (
 			<div>
@@ -26,11 +30,12 @@ function BakerViewer({ bakers }) {
                 //key is the same as value so you can shorten it as above.
             })
         })
-        .then((res)=>{
-            return res.json()
-        }).then(console.log) //end of fetch
+        .then((res) => res.json()).then((newDonut) => 
+            setDonuts((donuts) => [...donuts, newDonut])); //end of fetch
 
-        console.log("donut")
+        // console.log("donut")
+        // console.log(addDonut)
+       
     }
 
     function setInput (e){
