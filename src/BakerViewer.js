@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 function BakerViewer({ bakers }) {
+    const [ number, setNumber ] = useState(0)
+    const [flavor, setFlavor] = useState("")
 	console.log(bakers);
 	function bakerFunc() {
 		return bakers.map((baker) => (
@@ -9,18 +11,50 @@ function BakerViewer({ bakers }) {
 			</div>
 		));
 	}
-	return (<><h2>{bakerFunc()}</h2>
-    <form>
-        <input type="number" name="Date Baked"></input>
-        
-        <input type="text" name="Flavor"></input>
-        <div className="button-row">
-            <button type="button"></button>
-        </div>
-    </form>
+    function handleSubmit(lmao){
+        lmao.preventDefault()
+
+        fetch("http://localhost:9292/donuts",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json"
+            },
+            body: JSON.stringify({
+                number,
+                flavor
+                //key is the same as value so you can shorten it as above.
+            })
+        })
+        .then((res)=>{
+            return res.json()
+        }).then(console.log) //end of fetch
+
+        console.log("donut")
+    }
+
+    function setInput (e){
+        setNumber(e.target.value)
+
+    }
+
+    function setStringInput (e){
+        setFlavor(e.target.value)
+    }
+    console.log(number, flavor)
+	return (
+        <>
+            <h2>{bakerFunc()}</h2>
+            <form onSubmit={handleSubmit}>
+                <input onChange={setInput} type="number" name="Date Baked"></input>
+                <input onChange={setStringInput}type="text" name="Flavor"></input>
+                <div className="button-row">
+                    <input type="submit" />
+                </div>
+            </form>
 
     
-    </>
+        </>
     )
 }
 
